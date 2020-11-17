@@ -15,5 +15,7 @@ module.exports = {
   rules: {
     'linebreak-style': ['error', platform() === 'linux' ? 'unix' : 'windows'],
     'implicit-arrow-linebreak': 'off',
+    'func-names': 'off',
+    'no-underscore-dangle': 'off',
   },
 };
