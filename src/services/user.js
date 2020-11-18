@@ -1,23 +1,18 @@
-/* eslint-disable class-methods-use-this */
-const events = require('events');
+const { EventEmitter } = require('events');
 
-const eventEmitter = new events.EventEmitter();
-const userModel = require('../models/user');
+const eventEmitter = new EventEmitter();
+
+// pass event instance to subscribers
+require('./email')(eventEmitter);
+const AuthService = require('./auth');
+
+const authService = new AuthService(eventEmitter, 'user_signup');
 
 class UserService {
-  async signup(user) {
-    // const userRecord = await userModel.create(user);
-
-    // publish user signup event
+  signup(user) {
     eventEmitter.emit('user_signup', user);
-
-    return { user };
+    return user;
   }
-
-  // getUser(userId) {
-  //   const user = this.userModel.findById(userId);
-  //   return user;
-  // }
 }
 
 module.exports = new UserService();

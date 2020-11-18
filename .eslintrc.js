@@ -17,5 +17,6 @@ module.exports = {
     'implicit-arrow-linebreak': 'off',
     'func-names': 'off',
     'no-underscore-dangle': 'off',
+    'class-methods-use-this': 'off',
   },
 };

@@ -1,31 +1,50 @@
 // const jwt = require('jsonwebtoken');
-// const bcrypt = require('bcryptjs');
-const events = require('events');
-
-const eventEmitter = new events.EventEmitter();
+const bcrypt = require('bcryptjs');
 
 class AuthService {
-  constructor(userModel) {
-    this.userModel = userModel;
-
-    // subcribe to user signup event
-    eventEmitter.on('user_signup', (user) => {
-      console.log('auth', user);
+  constructor(eventEmitter, event) {
+    eventEmitter.on(event, (user) => {
+      switch (event) {
+        case 'user_signup':
+          this.signUp(user);
+          break;
+        default:
+          break;
+      }
     });
-
-    // return { user: userRecord };
   }
 
-  // async SignIn(email, password) {
-  //   const user = await this.userModel.findOne({ email });
+  signUp(user) {
+    console.log('Registering user');
+  }
 
-  //   // Verify user email and password
-  //   const isPasswordValid = await bcrypt.compare(password, user.password);
+  async signIn(email, password) {
+    const user = await this.userModel.findOne({ email });
 
-  //   if (!user || !isPasswordValid) {
-  //     throw new Error('Incorrect email or password');
-  //   }
-  // }
+    // Verify user email and password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!user || !isPasswordValid) {
+      throw new Error('Incorrect email or password');
+    }
+  }
+
+  forgotPassword() {
+    console.log('Forgot Password');
+  }
 }
 
 module.exports = AuthService;
+
+// return { user: userRecord };
+
+// async SignIn(email, password) {
+//   const user = await this.userModel.findOne({ email });
+
+//   // Verify user email and password
+//   const isPasswordValid = await bcrypt.compare(password, user.password);
+
+//   if (!user || !isPasswordValid) {
+//     throw new Error('Incorrect email or password');
+//   }
+// }

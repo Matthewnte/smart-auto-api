@@ -1,17 +1,9 @@
 const mongoose = require('mongoose');
-const validate = require('validator');
+// const validate = require('validator');
 
-const userSchema = mongoose.Schema(
+const dealerSchema = mongoose.Schema(
   {
-    firstName: { type: String, required: 'First name is required' },
-    lastName: { type: String, required: 'Last name is required' },
-    email: {
-      type: String,
-      lowercase: true,
-      unique: true,
-      index: true,
-      validate: [validate.isEmail, 'Please enter a valid email'],
-    },
+    companyName: { type: String, required: 'Compauny name is required' },
     photo: {
       type: String,
       default:
@@ -38,4 +30,4 @@ const userSchema = mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Dealer', dealerSchema);

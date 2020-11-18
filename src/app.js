@@ -7,7 +7,10 @@ const helmet = require('helmet');
 const cors = require('cors');
 
 // import error handler
-// const errorHandler = require('./middleware/errorHandler');
+const errorHandler = require('./loaders/errorHandler');
+
+// dependency injection
+// require('./loaders/di_injection');
 
 // Import routes
 const routes = require('./api');
@@ -58,6 +61,6 @@ app.use(express.json());
 app.use('/api/v1', routes());
 
 // handle all errors
-// app.use(errorHandler);
+app.use(errorHandler);
 
 module.exports = app;
