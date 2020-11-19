@@ -1,17 +1,28 @@
+/* eslint-disable global-require */
 const { EventEmitter } = require('events');
+const UserModel = require('../models/user');
 
 const eventEmitter = new EventEmitter();
 
-// pass event instance to subscribers
-require('./email')(eventEmitter);
-const AuthService = require('./auth');
-
-const authService = new AuthService(eventEmitter, 'user_signup');
-
 class UserService {
-  signup(user) {
+  async signup(userData, req) {
+    // require subscriber module and pass eventEmitter instance
+    require('./email')(eventEmitter, req);
+    const authService = require('./auth')(eventEmitter);
+
+    // create new user
+    const user = await UserModel.create(userData);
+    let userToken;
+
+    // listen subscribe to generate token event
+    authService.on('token', (token) => {
+      userToken = token;
+    });
+
+    // publish user_signup event
     eventEmitter.emit('user_signup', user);
-    return user;
+
+    return { user, userToken };
   }
 }
 

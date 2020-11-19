@@ -25,6 +25,7 @@ module.exports = {
   // jwt
   jwtSecret: process.env.JWT_SECRET,
   jwtAlgorithm: process.env.JWT_ALGO,
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN,
 
   /**
    * Used by winston logger
@@ -56,10 +57,12 @@ module.exports = {
     prefix: '/api',
   },
   /**
-   * Mailgun email credentials
+   * Nodemailer
    */
-  emails: {
-    apiKey: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_DOMAIN,
+  email: {
+    userName: process.env.EMAIL_USERNAME,
+    password: process.env.EMAIL_PASSWORD,
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
   },
 };

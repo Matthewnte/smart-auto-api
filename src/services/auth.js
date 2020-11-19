@@ -1,21 +1,22 @@
-// const jwt = require('jsonwebtoken');
+const EventEmitter = require('events');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const config = require('../config');
 
-class AuthService {
-  constructor(eventEmitter, event) {
-    eventEmitter.on(event, (user) => {
-      switch (event) {
-        case 'user_signup':
-          this.signUp(user);
-          break;
-        default:
-          break;
-      }
+class AuthService extends EventEmitter {
+  constructor(eventEmitter) {
+    super();
+    eventEmitter.on('user_signup', (user) => {
+      console.log('Signing user up');
+      this.generateToken(user);
     });
   }
 
-  signUp(user) {
-    console.log('Registering user');
+  generateToken(user) {
+    const token = jwt.sign({ id: user._id }, config.jwtSecret, {
+      expiresIn: config.jwtExpiresIn,
+    });
+    this.emit('token', token);
   }
 
   async signIn(email, password) {
@@ -34,7 +35,7 @@ class AuthService {
   }
 }
 
-module.exports = AuthService;
+module.exports = (eventEmitter) => new AuthService(eventEmitter);
 
 // return { user: userRecord };
 
