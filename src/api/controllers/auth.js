@@ -5,6 +5,8 @@
  * @param {Options} UserModels Options of models for all users
  */
 const authControllers = (catchAsyncError, ApiError, userService) => {
+  // Define controllers
+
   /**
    * @description Method for singup
    * @param {*} req Request object
@@ -13,10 +15,12 @@ const authControllers = (catchAsyncError, ApiError, userService) => {
   const userSignup = catchAsyncError(async (req, res) => {
     // get request body
     const { body: reqBody } = req;
-    const { user } = await userService.signup(reqBody);
+
+    // send request to userService
+    const { user, token } = await userService.signup(reqBody, req);
 
     // return response
-    res.status(201).json({
+    res.status(201).header('Authorization', token).json({
       status: 'success',
       data: {
         user,

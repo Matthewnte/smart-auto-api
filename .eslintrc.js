@@ -18,5 +18,7 @@ module.exports = {
     'func-names': 'off',
     'no-underscore-dangle': 'off',
     'class-methods-use-this': 'off',
+    'no-param-reassign': 'off',
+    'global-require': 'off',
   },
 };

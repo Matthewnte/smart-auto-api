@@ -15,6 +15,6 @@ const { userSignup } = require('../controllers/auth')(
   userService,
 );
 
-module.exports = (app) => {
-  app.post('/auth/signup', userSignup);
+module.exports = (router) => {
+  router.post('/auth/signup', userSignup);
 };
