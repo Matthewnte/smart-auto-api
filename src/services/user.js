@@ -5,9 +5,9 @@ const UserModel = require('../models/user');
 const eventEmitter = new EventEmitter();
 
 class UserService {
-  async signup(userData, req) {
+  async signup(userData, url) {
     // require subscriber module and pass eventEmitter instance
-    require('./email')(eventEmitter, req);
+    require('./email')(eventEmitter, url);
     const authService = require('./auth')(eventEmitter);
 
     // create new user

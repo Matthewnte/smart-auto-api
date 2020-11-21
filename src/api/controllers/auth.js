@@ -7,17 +7,15 @@
 const authControllers = (catchAsyncError, ApiError, userService) => {
   // Define controllers
 
-  /**
-   * @description Method for singup
-   * @param {*} req Request object
-   * @param {*} res Response object
-   */
   const userSignup = catchAsyncError(async (req, res) => {
     // get request body
     const { body: reqBody } = req;
 
-    // send request to userService
-    const { user, token } = await userService.signup(reqBody, req);
+    // get base url
+    const url = `${req.protocol}://${req.get('host')}`;
+
+    // send request to userService for procesing
+    const { user, token } = await userService.signup(reqBody, url);
 
     // return response
     res.status(201).header('Authorization', token).json({
