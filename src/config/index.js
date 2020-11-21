@@ -64,5 +64,12 @@ module.exports = {
     password: process.env.EMAIL_PASSWORD,
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
+    user: process.env.AUTH_USER,
+  },
+  oauth2: {
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    redirectUri: process.env.REDIRECT_URI,
+    refreshToken: process.env.REFRESH_TOKEN,
   },
 };
