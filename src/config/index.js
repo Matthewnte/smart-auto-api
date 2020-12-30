@@ -1,9 +1,7 @@
-require('dotenv').config();
+const envFound = require('dotenv').config();
 
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-const envFound = require('dotenv').config();
 
 if (envFound.error) {
   // This error should crash whole process
@@ -55,6 +53,7 @@ module.exports = {
    */
   api: {
     prefix: '/api',
+    version: '1',
   },
   /**
    * Nodemailer

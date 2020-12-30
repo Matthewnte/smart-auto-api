@@ -13,7 +13,7 @@ const errorHandler = require('./loaders/errorHandler');
 // require('./loaders/di_injection');
 
 // Import routes
-const routes = require('./api');
+const routes = require('./services');
 
 // initialize express server
 const app = express();
