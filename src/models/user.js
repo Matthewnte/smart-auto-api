@@ -3,17 +3,6 @@ const mongoose = require('mongoose');
 const validate = require('validator').default;
 const bcrypt = require('bcryptjs');
 
-class validators {
-  /**
-   * @description Check that password is properly confirmed
-   */
-  static confirmPassword() {
-    return function validation(val) {
-      return val === this.confirmPassword;
-    };
-  }
-}
-
 const userSchema = mongoose.Schema(
   {
     firstName: { type: String, required: 'First name is required' },
@@ -26,23 +15,18 @@ const userSchema = mongoose.Schema(
       required: 'Email field is required',
       validate: [validate.isEmail, 'Please enter a valid email'],
     },
+    password: {
+      type: String,
+      required: 'Password is required',
+      minlength: [8, 'Password must be at least 8 characters'],
+      select: false,
+    },
     photo: {
       type: String,
       default:
         'https://res.cloudinary.com/daygucgkt/image/upload/v1602758572/blank-profile-picture-973460_1280_gbyj3p.png',
     },
     photoId: String,
-    password: {
-      type: String,
-      required: 'Password is required',
-      minlength: [8, 'Password must be at least 8 characters'],
-      select: false,
-      validate: [
-        // only works on CREATE and SAVE
-        validators.confirmPassword,
-        'Please confirm password to be the same',
-      ],
-    },
     confirmEmailToken: String,
   },
   { timestamps: true },

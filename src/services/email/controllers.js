@@ -75,8 +75,8 @@ const emailService = async (user, content, params) => {
     /**
      * @description Create account confirmation url
      */
-    createEmailConfirmUrl() {
-      const confirmEmailUrl = `${params.url}/api/v${config.api.version}/auth/users/confirmEmail/${user.emailConfirmToken}`;
+    createEmailConfirmUrl(role) {
+      const confirmEmailUrl = `${params.url}/api/v${config.api.version}/auth/${role}/confirmEmail/${user.emailConfirmToken}`;
       return confirmEmailUrl;
     },
   };
@@ -94,6 +94,11 @@ const emailService = async (user, content, params) => {
 
       switch (options.service) {
         case 'user_signup':
+          subject = options.subject;
+          html = options.html;
+          break;
+
+        case 'dealer_signup':
           subject = options.subject;
           html = options.html;
           break;
@@ -121,14 +126,16 @@ const emailService = async (user, content, params) => {
     /**
      * Send signup confirmation email.
      */
-    async sendSignupEmail() {
-      logger.info('Sending user_singup confirmation email');
-      const emailConfirmUrl = privates.createEmailConfirmUrl();
+    async sendSignupEmail(role) {
+      logger.info(`Sending ${role}_singup confirmation email`);
+      const emailConfirmUrl = privates.createEmailConfirmUrl(role);
       const html = privates.emailOutput('welcome', emailConfirmUrl);
 
       // Send email to confirm user signup
       await this.sendEmail(
-        { service: 'user_signup', subject: 'Confirm your account', html },
+        {
+          service: `${role}_signup`, subject: 'Confirm your account', html,
+        },
       );
     },
   };

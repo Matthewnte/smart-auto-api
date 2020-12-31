@@ -22,24 +22,30 @@ const signup = [
     .custom((password, { req }) => password === req.body.confirmPassword)
     .withMessage('Passwords must match')
     .escape(),
-  body('firstName')
+  body('companyName')
     .isString()
-    .withMessage('First name must be string')
+    .withMessage('Company name must be string')
     .trim(' ')
     .notEmpty()
-    .withMessage('First name is required')
-    .isLength({ min: 2 })
-    .withMessage('First name must be at least 2 characters')
+    .withMessage('Company name is required')
+    .isLength({ min: 5 })
+    .withMessage('Company name must be at least 5 characters')
     .escape(),
-  body('lastName')
+  body('address')
     .isString()
-    .withMessage('Last name must be string')
+    .withMessage('Address must be string')
     .trim(' ')
     .notEmpty()
-    .withMessage('Last name is required')
-    .isLength({ min: 2 })
-    .withMessage('Last name must be at least 2 characters')
+    .withMessage('Address is required')
+    .isLength({ min: 20 })
+    .withMessage('Address must be at least 20 characters')
     .escape(),
+  body('phone')
+    .trim(' ')
+    .notEmpty()
+    .withMessage('Phone number is required')
+    .isMobilePhone('en-NG', { strictMode: true })
+    .withMessage('Not a valid email'),
 ];
 
 module.exports = {
