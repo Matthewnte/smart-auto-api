@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const auth = require('./routes/auth');
+const auth = require('./user_signup/routes');
 // const user = require('./routes/user');
 // const agendash = require('./routes/agendash');
 

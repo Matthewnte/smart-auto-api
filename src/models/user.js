@@ -1,8 +1,18 @@
 /* eslint-disable consistent-return */
-const crypto = require('crypto');
 const mongoose = require('mongoose');
-const validate = require('validator');
+const validate = require('validator').default;
 const bcrypt = require('bcryptjs');
+
+class validators {
+  /**
+   * @description Check that password is properly confirmed
+   */
+  static confirmPassword() {
+    return function validation(val) {
+      return val === this.confirmPassword;
+    };
+  }
+}
 
 const userSchema = mongoose.Schema(
   {
@@ -25,19 +35,13 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: 'Password is required',
-      minlength: [8, 'Password must be atleast 8 characters'],
+      minlength: [8, 'Password must be at least 8 characters'],
       select: false,
-    },
-    confirmPassword: {
-      type: String,
-      required: 'Please confirm your password',
-      validate: {
+      validate: [
         // only works on CREATE and SAVE
-        validator(el) {
-          return el === this.password;
-        },
-        message: 'Passwords are not the same',
-      },
+        validators.confirmPassword,
+        'Please confirm password to be the same',
+      ],
     },
     confirmEmailToken: String,
   },
@@ -51,19 +55,7 @@ userSchema.pre('save', async function (next) {
   // hash password with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
 
-  // delete confirmPassword field
-  this.confirmPassword = undefined;
-  next();
+  return next();
 });
-
-userSchema.methods.generateEmailConfirmToken = function () {
-  const confirmEmail = crypto.randomBytes(32).toString('hex');
-  this.confirmEmailToken = crypto
-    .createHash('sha256')
-    .update(confirmEmail)
-    .digest('hex');
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-  return confirmEmail;
-};
 
 module.exports = mongoose.model('User', userSchema);

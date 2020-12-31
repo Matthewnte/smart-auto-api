@@ -13,7 +13,8 @@ const errorHandler = require('./loaders/errorHandler');
 // require('./loaders/di_injection');
 
 // Import routes
-const routes = require('./api');
+const routes = require('./services');
+const config = require('./config');
 
 // initialize express server
 const app = express();
@@ -58,7 +59,7 @@ app.use(express.json());
 // app.use('/api/v1/users/login', limiter);
 
 // // route entry
-app.use('/api/v1', routes());
+app.use(`/api/v${config.api.version}`, routes());
 
 // handle all errors
 app.use(errorHandler);
