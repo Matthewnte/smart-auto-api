@@ -1,26 +1,41 @@
-const jwt = require('jsonwebtoken');
+const { verify, TokenExpiredError } = require('jsonwebtoken');
 const config = require('../../../config');
 
-const getTokenFromHeader = (req) => {
-  /**
-   * @TODO Edge and Internet Explorer do some weird things with the headers
-   * So I believe that this should handle more 'edge' cases ;)
-   */
-  if (
-    req.headers.authorization
-    && (req.headers.authorization.split(' ')[0] === 'Token'
-      || req.headers.authorization.split(' ')[0] === 'Bearer')
-  ) {
-    return req.headers.authorization.split(' ')[1];
-  }
-  return null;
-};
+const confirmEmail = (req, res, next) => verify(
+  req.params.token,
+  config.jwt.secret,
+  {
+    algorithms: [config.jwt.algorithm],
+    issuer: 'Smart Auto LTD',
+    audience: ['user'],
+  },
+  (err, payload) => {
+    if (err) {
+      // On error
+      if (err instanceof TokenExpiredError) {
+        // If token has expired
+        return res
+          .status(403)
+          .json({
+            status: 'expired',
+            msg: 'Session expired',
+            data: {},
+          });
+      }
 
-const isAuth = jwt({
-  secret: config.jwtSecret, // The _secret_ to sign the JWTs
-  algorithms: [config.jwtAlgorithm], // JWT Algorithm
-  userProperty: 'token', // Use req.token to store the JWT
-  getToken: getTokenFromHeader, // How to extract the JWT from the request
-});
+      // Errors beyond expiration
+      return res
+        .status(403)
+        .json({
+          status: 'failed',
+          msg: 'Login to continue',
+          data: {},
+        });
+    }
 
-module.exports = isAuth;
+    req.body = payload;
+    return next();
+  },
+);
+
+module.exports = { confirmEmail };

@@ -19,6 +19,8 @@ const dealerSchema = mongoose.Schema(
         'https://res.cloudinary.com/daygucgkt/image/upload/v1602758572/blank-profile-picture-973460_1280_gbyj3p.png',
     },
     photoId: String,
+    address: String,
+    phoneNumber: String,
     password: {
       type: String,
       required: 'Password is required',

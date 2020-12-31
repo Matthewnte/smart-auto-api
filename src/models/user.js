@@ -3,6 +3,17 @@ const mongoose = require('mongoose');
 const validate = require('validator').default;
 const bcrypt = require('bcryptjs');
 
+class validators {
+  /**
+   * @description Check that password is properly confirmed
+   */
+  static confirmPassword() {
+    return function validation(val) {
+      return val === this.confirmPassword;
+    };
+  }
+}
+
 const userSchema = mongoose.Schema(
   {
     firstName: { type: String, required: 'First name is required' },
@@ -26,13 +37,11 @@ const userSchema = mongoose.Schema(
       required: 'Password is required',
       minlength: [8, 'Password must be at least 8 characters'],
       select: false,
-      validate: {
+      validate: [
         // only works on CREATE and SAVE
-        validator(el) {
-          return el === this.confirmPassword;
-        },
-        message: 'Please confirm password to be the same',
-      },
+        validators.confirmPassword,
+        'Please confirm password to be the same',
+      ],
     },
     confirmEmailToken: String,
   },

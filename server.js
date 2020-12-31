@@ -15,7 +15,7 @@ const app = require('./src/app');
 // });
 
 // listen for request on port
-app.listen(config.port, () => logger.info(`Server listening on port: ${config.port}`));
+app.listen(config.api.port, () => logger.info(`Server listening on port: ${config.api.port}`));
 
 // Handle unhandled rejection
 // process.on('unhandledRejection', (err) => {

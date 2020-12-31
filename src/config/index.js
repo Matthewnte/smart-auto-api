@@ -9,55 +9,37 @@ if (envFound.error) {
 }
 
 module.exports = {
-  /**
-   * Port form environment
-   */
-  port: parseInt(process.env.PORT, 10),
 
-  /**
-   * That long string from mlab
-   */
-  databaseURL: process.env.MONGODB_URI,
-  dbPassword: process.env.MONGODB_PASSWORD,
-
-  // jwt
-  jwtSecret: process.env.JWT_SECRET,
-  jwtAlgorithm: process.env.JWT_ALGO,
-  jwtExpiresIn: process.env.JWT_EXPIRES_IN,
-
-  /**
-   * Used by winston logger
-   */
-  logs: {
-    level: process.env.LOG_LEVEL || 'silly',
-  },
-
-  /**
-   * Agenda.js stuff
-   */
-  agenda: {
-    dbCollection: process.env.AGENDA_DB_COLLECTION,
-    pooltime: process.env.AGENDA_POOL_TIME,
-    concurrency: parseInt(process.env.AGENDA_CONCURRENCY, 10),
-  },
-
-  /**
-   * Agendash config
-   */
-  agendash: {
-    user: 'agendash',
-    password: '123456',
-  },
   /**
    * API configs
    */
   api: {
+    port: Number.isNaN(parseInt(process.env.PORT, 10))
+      ? 3000 : parseInt(process.env.PORT, 10),
     prefix: '/api',
-    version: '1',
+    version: process.env.API_VERSION || '1.0.0',
   },
-  /**
-   * Nodemailer
-   */
+
+  // Winston logger
+  logs: {
+    level: process.env.LOG_LEVEL || 'silly',
+  },
+
+  // Database
+  db: {
+    url: process.env.MONGODB_URI,
+    password: process.env.MONGODB_PASSWORD,
+  },
+
+  // JWT
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    algorithm: process.env.JWT_ALGO || 'HS256',
+    expiresIn: process.env.JWT_EXPIRES_IN || '10 minutes',
+    refreshesIn: process.env.JWT_REFRESHES_IN || '30 days',
+  },
+
+  // Nodemailer
   email: {
     userName: process.env.EMAIL_USERNAME,
     password: process.env.EMAIL_PASSWORD,
@@ -65,10 +47,25 @@ module.exports = {
     port: process.env.EMAIL_PORT,
     user: process.env.AUTH_USER,
   },
+
+  // Google API
   oauth2: {
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     redirectUri: process.env.REDIRECT_URI,
     refreshToken: process.env.REFRESH_TOKEN,
+  },
+
+  // Agenda.js
+  agenda: {
+    dbCollection: process.env.AGENDA_DB_COLLECTION,
+    pooltime: process.env.AGENDA_POOL_TIME,
+    concurrency: parseInt(process.env.AGENDA_CONCURRENCY, 10),
+  },
+
+  // Agendash
+  agendash: {
+    user: 'agendash',
+    password: '123456',
   },
 };

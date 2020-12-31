@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 const pug = require('pug');
 const htmlToText = require('html-to-text');
 const { google } = require('googleapis');
+const path = require('path');
 const config = require('../../config');
 const logger = require('../../loaders/logger');
 
@@ -17,7 +18,7 @@ const logger = require('../../loaders/logger');
  * @param {string} content.html Email body as HTML
  * @param {object} params Other data
  */
-const emailService = (user, content, params) => {
+const emailService = async (user, content, params) => {
   /**
    * Private properties and methods
    */
@@ -25,18 +26,18 @@ const emailService = (user, content, params) => {
     /**
      * Email transporter object
      */
-    transporter: (async () => {
-      // setup oauth2
-      const oAuth2Client = new google.auth.OAuth2(
-        config.oauth2.clientId,
-        config.oauth2.clientSecret,
-        config.oauth2.redirectUri,
-      );
-      oAuth2Client.setCredentials({ refresh_token: config.oauth2.refreshToken });
-      const accessToken = await oAuth2Client.getAccessToken();
-
+    transporter: await (async () => {
       // Create a transporter
       if (process.env.NODE_ENV === 'production') {
+        // setup oauth2
+        const oAuth2Client = new google.auth.OAuth2(
+          config.oauth2.clientId,
+          config.oauth2.clientSecret,
+          config.oauth2.redirectUri,
+        );
+        oAuth2Client.setCredentials({ refresh_token: config.oauth2.refreshToken });
+        const accessToken = await oAuth2Client.getAccessToken();
+
         return nodemailer.createTransport({
           service: 'gmail',
           auth: {
@@ -66,7 +67,7 @@ const emailService = (user, content, params) => {
      */
     emailOutput(template, url) {
       const html = pug.renderFile(
-        `${__dirname}/../../views/emails/${template}.pug`,
+        path.resolve(__dirname, `../../views/emails/${template}.pug`),
         { firstName: user.firstName, url, subject: content.subject },
       );
       return html;
@@ -75,7 +76,7 @@ const emailService = (user, content, params) => {
      * @description Create account confirmation url
      */
     createEmailConfirmUrl() {
-      const confirmEmailUrl = `${params.url}/api/${config.apiVersion}/users/confirmEmail/${user.emailConfirmToken}`;
+      const confirmEmailUrl = `${params.url}/api/v${config.api.version}/auth/users/confirmEmail/${user.emailConfirmToken}`;
       return confirmEmailUrl;
     },
   };
@@ -127,7 +128,7 @@ const emailService = (user, content, params) => {
 
       // Send email to confirm user signup
       await this.sendEmail(
-        { subject: 'Confirm your account', html },
+        { service: 'user_signup', subject: 'Confirm your account', html },
       );
     },
   };

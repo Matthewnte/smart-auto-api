@@ -15,7 +15,7 @@ const regControllers = (models) => {
       const url = `${req.protocol}://${req.get('host')}`;
 
       // Generate token to confirm user email
-      const token = jwt.sign(reqBody, config.jwtSecret, {
+      const token = jwt.sign(reqBody, config.jwt.secret, {
         expiresIn: 600, audience: 'user', issuer: 'Smart Auto LTD',
       });
 
@@ -29,7 +29,7 @@ const regControllers = (models) => {
       const emailContent = {};
       const emailParams = { url };
 
-      const emailService = EmailService(emailReceipent, emailContent, emailParams);
+      const emailService = await EmailService(emailReceipent, emailContent, emailParams);
       emailService.sendSignupEmail();
 
       // return response
@@ -43,16 +43,16 @@ const regControllers = (models) => {
     },
 
     createUser: async (req, res) => {
-      // get request data
-      const { param: reqParam } = req;
-
-      // Get user details
-      const payload = jwt.verify(reqParam.token, config.jwtSecret, {
-        algorithms: ['HS256'], audience: 'user', issuer: 'Smart Auto LTD',
-      });
-
       // Create user profile
-      const user = await models.UserModel.create({ ...payload });
+      const user = await models.UserModel.create({ ...req.body });
+
+      // Define response data
+      const resData = {
+        photo: user.photo,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      };
 
       // Setup payload for access and refresh tokens
       const tokenPayload = { ...user };
@@ -63,20 +63,19 @@ const regControllers = (models) => {
       };
 
       // Setup access token
-      const accessToken = jwt.sign(tokenPayload, config.jwtSecret, userTokenOptions);
+      const accessToken = jwt.sign(tokenPayload, config.jwt.secret, userTokenOptions);
 
       // Setup refresh token
       userTokenOptions.expiresIn = '30d';
-      const refreshToken = jwt.sign(tokenPayload, config.jwtSecret, userTokenOptions);
+      const refreshToken = jwt.sign(tokenPayload, config.jwt.secret, userTokenOptions);
 
       // Setup cookies
-      const version = process.env.VERSION || 'v1.0.0';
       const cookieOptions = {
         maxAge: 30 * 24 * 3600000,
         secure: false,
         sameSite: 'none',
         httpOnly: true,
-        path: `/api/${version}/auth/refresh`,
+        path: `/api/v${config.api.version}/auth/refresh`,
         domain: req.hostname !== 'localhost' ? `.${req.hostname}` : 'localhost',
       };
 
@@ -87,7 +86,8 @@ const regControllers = (models) => {
         .cookie('Smart-Auto-API-Refresh', refreshToken, cookieOptions)
         .json({
           status: 'success',
-          data: { ...user },
+          msg: 'You have been succesfully registered and logged in',
+          data: resData,
         });
     },
   };
