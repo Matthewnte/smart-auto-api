@@ -30,7 +30,7 @@ const regControllers = (models) => {
       const emailParams = { url };
 
       const emailService = await EmailService(emailReceipent, emailContent, emailParams);
-      emailService.sendSignupEmail();
+      emailService.sendSignupEmail('user');
 
       // return response
       return res

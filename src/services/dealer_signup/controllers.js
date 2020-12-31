@@ -16,7 +16,7 @@ const regControllers = (models) => {
 
       // Generate token to confirm user email
       const token = jwt.sign(reqBody, config.jwt.secret, {
-        expiresIn: 600, audience: 'user', issuer: 'Smart Auto LTD',
+        expiresIn: 600, audience: 'dealer', issuer: 'Smart Auto LTD',
       });
 
       // Define email service params
@@ -30,7 +30,7 @@ const regControllers = (models) => {
       const emailParams = { url };
 
       const emailService = await EmailService(emailReceipent, emailContent, emailParams);
-      emailService.sendSignupEmail();
+      emailService.sendSignupEmail('dealer');
 
       // return response
       return res
@@ -49,9 +49,10 @@ const regControllers = (models) => {
       // Define response data
       const resData = {
         photo: user.photo,
+        name: user.companyName,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        phone: user.phone,
+        address: user.address,
       };
 
       // Setup payload for access and refresh tokens
@@ -59,7 +60,7 @@ const regControllers = (models) => {
 
       // Setup options for access and refresh tokens
       const userTokenOptions = {
-        expiresIn: 600, audience: 'user', issuer: 'Smart Auto LTD', algorithm: 'HS256',
+        expiresIn: 600, audience: 'dealer', issuer: 'Smart Auto LTD', algorithm: 'HS256',
       };
 
       // Setup access token

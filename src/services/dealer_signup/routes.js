@@ -6,6 +6,6 @@ const DealerModel = require('../../models/dealer');
 const { getDealerDetails, createDealer } = require('./controllers')({ DealerModel });
 
 module.exports = (router) => {
-  router.post('/auth/dealers/signup', validator.signup, isRequestValid, getDealerDetails);
-  router.get('/auth/dealers/confirmEmail/:token', isAuth.confirmEmail, validator.signup, isRequestValid, createDealer);
+  router.post('/auth/dealer/signup', validator.signup, isRequestValid, getDealerDetails);
+  router.get('/auth/dealer/confirmEmail/:token', isAuth.confirmEmail, validator.signup, isRequestValid, createDealer);
 };

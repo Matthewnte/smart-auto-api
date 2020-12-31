@@ -4,16 +4,7 @@ const bcrypt = require('bcryptjs');
 
 class validators {
   /**
-   * @description Check that password is properly confirmed
-   */
-  static confirmPassword() {
-    return function validation(val) {
-      return val === this.confirmPassword;
-    };
-  }
-
-  /**
-   * @description Check that password is properly confirmed
+   * @description Check that mobile number is valid
    */
   static isMobilePhone() {
     return function validation(val) {
@@ -42,10 +33,6 @@ const dealerSchema = mongoose.Schema(
       required: 'Password is required',
       minlength: [8, 'Password must be at least 8 characters'],
       select: false,
-      validate: [
-        validators.confirmPassword(),
-        'Please confirm password to be the same',
-      ],
     },
     photo: {
       type: String,
@@ -58,11 +45,11 @@ const dealerSchema = mongoose.Schema(
       required: 'Address is required',
       minlength: [20, 'Address must be at least 20 characters'],
     },
-    phoneNumber: {
+    phone: {
       type: String,
       unique: true,
       index: true,
-      required: 'Email field is required',
+      required: 'Phone number field is required',
       validate: [
         validators.isMobilePhone(),
         'Enter a valid phone number',
