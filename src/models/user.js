@@ -26,12 +26,6 @@ const userSchema = mongoose.Schema(
       required: 'Email field is required',
       validate: [validate.isEmail, 'Please enter a valid email'],
     },
-    photo: {
-      type: String,
-      default:
-        'https://res.cloudinary.com/daygucgkt/image/upload/v1602758572/blank-profile-picture-973460_1280_gbyj3p.png',
-    },
-    photoId: String,
     password: {
       type: String,
       required: 'Password is required',
@@ -43,6 +37,12 @@ const userSchema = mongoose.Schema(
         'Please confirm password to be the same',
       ],
     },
+    photo: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/daygucgkt/image/upload/v1602758572/blank-profile-picture-973460_1280_gbyj3p.png',
+    },
+    photoId: String,
     confirmEmailToken: String,
   },
   { timestamps: true },

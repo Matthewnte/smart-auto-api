@@ -1,6 +1,6 @@
 // Require middlewares
 const { isAuth, validator, isRequestValid } = require('./middlewares');
-// Require users model
+// Require user model
 const UserModel = require('../../models/user');
 // require userSignup contoller
 const { getUserDetails, createUser } = require('./controllers')({ UserModel });
