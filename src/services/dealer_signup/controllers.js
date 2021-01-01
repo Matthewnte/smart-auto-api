@@ -44,31 +44,31 @@ const regControllers = (models) => {
 
     createDealer: async (req, res) => {
       // Create user profile
-      const user = await models.DealerModel.create({ ...req.body });
+      const dealer = await models.DealerModel.create({ ...req.body });
 
       // Define response data
       const resData = {
-        photo: user.photo,
-        name: user.companyName,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
+        photo: dealer.photo,
+        name: dealer.companyName,
+        email: dealer.email,
+        phone: dealer.phone,
+        address: dealer.address,
       };
 
       // Setup payload for access and refresh tokens
-      const tokenPayload = { ...user };
+      const tokenPayload = { ...dealer };
 
       // Setup options for access and refresh tokens
-      const userTokenOptions = {
+      const dealerTokenOptions = {
         expiresIn: 600, audience: 'dealer', issuer: 'Smart Auto LTD', algorithm: 'HS256',
       };
 
       // Setup access token
-      const accessToken = jwt.sign(tokenPayload, config.jwt.secret, userTokenOptions);
+      const accessToken = jwt.sign(tokenPayload, config.jwt.secret, dealerTokenOptions);
 
       // Setup refresh token
-      userTokenOptions.expiresIn = '30d';
-      const refreshToken = jwt.sign(tokenPayload, config.jwt.secret, userTokenOptions);
+      dealerTokenOptions.expiresIn = '30d';
+      const refreshToken = jwt.sign(tokenPayload, config.jwt.secret, dealerTokenOptions);
 
       // Setup cookies
       const cookieOptions = {
