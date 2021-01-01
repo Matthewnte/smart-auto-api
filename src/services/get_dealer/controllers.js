@@ -23,9 +23,7 @@ const regControllers = (models) => {
 
       // Get dealer profile
       const dealers = await models.DealerModel.find(
-        queryParams, '-password -updatedAt', {
-          skip: page * limit, limit,
-        },
+        queryParams, '-password -updatedAt', { skip: page * limit, limit },
       );
 
       // Define response data
@@ -62,9 +60,10 @@ const regControllers = (models) => {
       // Define response data
       const resData = {
         photo: dealer.photo,
+        name: dealer.companyName,
         email: dealer.email,
-        firstName: dealer.firstName,
-        lastName: dealer.lastName,
+        phone: dealer.phone,
+        address: dealer.address,
       };
 
       // return response
