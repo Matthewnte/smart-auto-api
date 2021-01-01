@@ -1,11 +1,13 @@
 const { validationResult } = require('express-validator');
-const isAuth = require('./isAuth');
 const validators = require('./requestValidator');
 
 module.exports = {
-  isAuth: {
-    confirmEmail: isAuth.confirmEmail,
-  },
+  /**
+   * Check to ensure there's nothing wrong with usable user input
+   * @param {object} req Expres request object
+   * @param {object} res  Expres request object
+   * @param {object} next  Expres request object
+   */
   isRequestValid: async (req, res, next) => {
     // validate user request data
     const validationError = validationResult(req);

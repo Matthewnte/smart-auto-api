@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 const isAuth = require('./isAuth');
-const validator = require('./requestValidator');
+const validators = require('./requestValidator');
 
 module.exports = {
   isAuth: {
@@ -21,5 +21,5 @@ module.exports = {
 
     return next();
   },
-  validator,
+  validators,
 };
