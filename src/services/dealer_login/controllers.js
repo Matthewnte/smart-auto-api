@@ -8,7 +8,7 @@ const regControllers = (models) => {
   const publics = {
     auth: async (req, res) => {
       // Create dealer profile
-      const dealer = await models.UserModel.findOne({ email: req.body.email });
+      const dealer = await models.DealerModel.findOne({ email: req.body.email });
 
       // Check against inexistent dealer
       if (!dealer) {
@@ -36,9 +36,10 @@ const regControllers = (models) => {
         // Define response data
         const resData = {
           photo: dealer.photo,
+          name: dealer.companyName,
           email: dealer.email,
-          firstName: dealer.firstName,
-          lastName: dealer.lastName,
+          phone: dealer.phone,
+          address: dealer.address,
         };
 
         // Setup payload for access and refresh tokens
