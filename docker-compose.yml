@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 services:
   smart_auto_api:
@@ -12,7 +12,7 @@ services:
       - PORT=8080
       - API_VERSION=1.0.0
       - LOG_LEVEL=info
-      - MONGODB_URI=mongodb://user:password@smart_auto_api_mongodb:27017/smart_auto_api_staging?auththSource=writeapp&w=1
+      - MONGODB_URI=mongodb://smart_auto_api_mongodb:27017/smart_auto_api_staging
       - JWT_SECRET=secret
       - JWT_ALGO=HS256
       - JWT_EXPIRES_IN="10 minutes"
@@ -45,5 +45,6 @@ services:
       - 27017:27017
     volumes:
       - data:/data/db
+
 volumes:
   data:
