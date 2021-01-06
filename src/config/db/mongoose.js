@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
-const config = require('..');
 const logger = require('../../loaders/logger');
-
-// replace password with placeholder with database password
-const DB = config.db.url.replace('<password>', config.db.password);
+const config = require('..');
 
 // Connect mongo database
 mongoose
-  .connect(DB, {
+  .connect(config.db.url, {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
-  .then(() => logger.info('DB connection successful'));
+  });
+
+const db = mongoose.connection;
+db.on('error', logger.error.bind(console, 'DB CONNECTION ERROR:'));
+db.once('open', () => logger.info('DB CONNECTED ✅'));

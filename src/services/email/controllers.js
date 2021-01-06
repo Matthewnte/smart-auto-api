@@ -28,7 +28,7 @@ const emailService = async (user, content, params) => {
      */
     transporter: await (async () => {
       // Create a transporter
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
         // setup oauth2
         const oAuth2Client = new google.auth.OAuth2(
           config.oauth2.clientId,
@@ -119,9 +119,9 @@ const emailService = async (user, content, params) => {
       };
 
       // Send email
-      await privates.transporter.sendMail(mailOptions);
-
-      logger.info('Email sent');
+      await privates.transporter.sendMail(mailOptions)
+        .then(() => logger.info('Email sent'))
+        .catch((err) => logger.error(err));
     },
     /**
      * Send signup confirmation email.
