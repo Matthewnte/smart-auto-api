@@ -28,7 +28,6 @@ module.exports = {
   // Database
   db: {
     url: process.env.MONGODB_URI,
-    password: process.env.MONGODB_PASSWORD,
   },
 
   // JWT

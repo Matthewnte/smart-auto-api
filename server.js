@@ -1,6 +1,6 @@
-const logger = require('./src/loaders/logger');
-
 const config = require('./src/config');
+
+const logger = require('./src/loaders/logger');
 
 // connect mongoDB
 require('./src/config/db/mongoose');

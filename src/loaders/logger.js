@@ -29,6 +29,7 @@ const LoggerInstance = winston.createLogger({
     winston.format.json(),
   ),
   transports,
+  handleExceptions: true,
 });
 
 module.exports = LoggerInstance;
