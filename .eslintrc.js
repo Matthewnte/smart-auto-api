@@ -16,5 +16,6 @@ module.exports = {
     'linebreak-style': ['error', platform() === 'linux' ? 'unix' : 'windows'],
     'func-names': 'off',
     'no-underscore-dangle': 'off',
+    'no-plusplus': 'off',
   },
 };

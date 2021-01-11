@@ -30,6 +30,7 @@ const LoggerInstance = winston.createLogger({
   ),
   transports,
   handleExceptions: true,
+  exitOnError: true,
 });
 
 module.exports = LoggerInstance;
