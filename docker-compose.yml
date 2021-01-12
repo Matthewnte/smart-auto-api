@@ -25,6 +25,13 @@ services:
       - CLIENT_SECRET=i6bmt4yAc1_h5NUxUZoViOGP
       - REDIRECT_URI=https://developers.google.com/oauthplayground
       - REFRESH_TOKEN=1//04XclJ6mgizRcCgYIARAAGAQSNwF-L9IrQdICbQX5XkIS0EaqM9fEA2z5DT-xZkkoYqLkFsIXCLCCptefpLfSrL4kKXxHxwb_ft8
+      - AUTH0_CLIENT_ID=E9e7S8TNdc1kdxGAdZwBnhZl84Hf2LJg
+      - AUTH0_DOMAIN=dev-1mhehu-j.us.auth0.com
+      - AUTH0_VERSION=2
+      - AUTH0_CLIENT_SECRET=RUCg8eyZU4jU8TAZ_CeFP5BC3oKs3jJaMq2qgXL5g5Syog0cCc9koyolcuZBpOwX
+      - SESSION_SECRET=584bb84c275c124ba925d6aa6c0ff4493f0f49b3836e8ee6d591aa75d79c01d4
+      - AUTH0_CALLBACK_URL=http://localhost:8080/api/v1.0.0/auth/login/callback
+      - CLIENT_BASEURL=https://console.developers.google.com
       - AGENDA_DB_COLLECTION=
       - AGENDA_POOL_TIME=
       - AGENDA_CONCURRENCY=

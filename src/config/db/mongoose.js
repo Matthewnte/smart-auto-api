@@ -3,7 +3,7 @@ const logger = require('../../loaders/logger');
 const config = require('..');
 
 // Connect mongo database
-mongoConnection = () => {
+const mongoConnection = () => {
   mongoose
     .connect(config.db.url, {
       useNewUrlParser: true,

@@ -4,6 +4,9 @@ const cluster = require('cluster');
 // Require system CPUs object
 const { cpus } = require('os');
 
+// Initiate .env
+require('dotenv').config();
+
 // Require app config
 const config = require('./src/config');
 
@@ -17,7 +20,13 @@ const mongoose = require('./src/config/db/mongoose');
 const app = require('./src/app');
 
 // Check that cluster is master on production
-if (process.env.NODE_ENV !== 'production' && cluster.isMaster) {
+if (
+  (
+    config.api.env === 'production'
+    || config.api.env === 'staging'
+  )
+  && cluster.isMaster
+) {
   // Get number of system processors
   const workersLength = cpus().length;
 

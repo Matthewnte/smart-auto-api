@@ -1,15 +1,5 @@
-const envFound = require('dotenv').config();
-
-// Set the NODE_ENV to 'development' by default
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-if (envFound.error) {
-  // This error should crash whole process
-  throw new Error("⚠️  Couldn't find .env file  ⚠️");
-}
-
-module.exports = {
-
+// Expose values
+const env = {
   /**
    * API configs
    */
@@ -18,6 +8,7 @@ module.exports = {
       ? 3000 : parseInt(process.env.PORT, 10),
     prefix: '/api',
     version: process.env.API_VERSION || '1.0.0',
+    env: process.env.NODE_ENV || 'development',
   },
 
   // Winston logger
@@ -62,9 +53,36 @@ module.exports = {
     concurrency: parseInt(process.env.AGENDA_CONCURRENCY, 10),
   },
 
+  // Auth0
+  auth0: {
+    domain: process.env.AUTH0_DOMAIN,
+    version: process.env.AUTH0_VERSION,
+    clientId: process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    callbackUrl: process.env.AUTH0_CALLBACK_URL,
+  },
+
+  // Session
+  session: {
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+      // Serve secure cookies, requires HTTPS
+      secure: process.env.NODE_ENV === 'production',
+    },
+    resave: false,
+    saveUninitialized: false,
+  },
+
+  // Client side
+  client: {
+    baseUrl: process.env.CLIENT_BASEURL,
+  },
+
   // Agendash
   agendash: {
     user: 'agendash',
     password: '123456',
   },
 };
+
+module.exports = env;

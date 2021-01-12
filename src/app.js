@@ -1,33 +1,60 @@
 const express = require('express');
 // const rateLimit = require('express-rate-limit');
+
 const helmet = require('helmet');
 // const mongoSanitize = require('express-mongo-sanitize');
 // const xss = require('xss-clean');
 // const hpp = require('hpp');
 const cors = require('cors');
 
+// Require session
+const session = require('express-session');
+
+// Require Passport
+const passport = require('passport');
+
 // import error handler
-const errorHandler = require('./loaders/errorHandler');
+// const errorHandler = require('./loaders/errorHandler');
 
 // dependency injection
 // require('./loaders/di_injection');
 
-// Import routes
-const routes = require('./services');
+// Require routes
+const services = require('./services');
+
+// Require configs
 const config = require('./config');
 
-// initialize express server
+// Require passport-strategies
+const passportStrategies = require('./config/passport-strategies');
+
+// Initialize express app
 const app = express();
 
-// GLOBAL MIDDLE WARES
-// Enable cors
+// Enable CORS
 app.use(cors());
 
 // set secure http headers
 app.use(helmet());
 
-// parses incomming request to json object
+// Parse incoming JSON requests
 app.use(express.json());
+
+app.use(session(config.session));
+
+// Initiate Passport for app
+passport.use(passportStrategies.auth0Strategy);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Support login sessions
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
 
 // Data sanitization against NoSql injection
 // app.use(mongoSanitize());
@@ -58,10 +85,10 @@ app.use(express.json());
 // });
 // app.use('/api/v1/users/login', limiter);
 
-// // route entry
-app.use(`/api/v${config.api.version}`, routes());
+// API entry
+app.use(`/api/v${config.api.version}`, services);
 
 // handle all errors
-app.use(errorHandler);
+// app.use(errorHandler);
 
 module.exports = app;
