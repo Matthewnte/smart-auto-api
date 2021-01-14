@@ -3,6 +3,7 @@ const { Router } = require('express');
 
 // Require middlewares
 const { validators, isRequestValid } = require('./middlewares');
+const routeProtectors = require('../../config/jwt');
 
 // Require user model
 const UserModel = require('../../models/user');
@@ -14,7 +15,14 @@ const { getAllUsers, getOneUser } = require('./controllers')({ UserModel });
 const router = Router();
 
 // Define routes
-router.get('/users', validators.listUsers, isRequestValid, getAllUsers);
+router.get(
+  '/users',
+  routeProtectors.jwtCheck,
+  routeProtectors.permissionsCheck(['read:users']),
+  validators.listUsers,
+  isRequestValid,
+  getAllUsers
+);
 router.get('/users/:userId', getOneUser);
 
 // Expose routes

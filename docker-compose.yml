@@ -29,6 +29,11 @@ services:
       - AUTH0_DOMAIN=dev-1mhehu-j.us.auth0.com
       - AUTH0_VERSION=2
       - AUTH0_CLIENT_SECRET=RUCg8eyZU4jU8TAZ_CeFP5BC3oKs3jJaMq2qgXL5g5Syog0cCc9koyolcuZBpOwX
+      - AUTH0_RPM=5
+      - AUTH0_JWKS_URI=https://dev-1mhehu-j.us.auth0.com/.well-known/jwks.json
+      - AUTH0_AUD=https://howmies-smart-auto/dealer
+      - AUTH0_ISS=https://dev-1mhehu-j.us.auth0.com/
+      - AUTH0_ALGO=RS256
       - SESSION_SECRET=584bb84c275c124ba925d6aa6c0ff4493f0f49b3836e8ee6d591aa75d79c01d4
       - AUTH0_CALLBACK_URL=http://localhost:8080/api/v1.0.0/auth/login/callback
       - CLIENT_BASEURL=https://console.developers.google.com

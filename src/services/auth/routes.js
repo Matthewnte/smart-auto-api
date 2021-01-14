@@ -8,7 +8,7 @@ const router = Router();
 
 // Define routes
 
-// To login
+// To login with username/password
 router.get(
   '/auth/login',
   passport.authenticate(

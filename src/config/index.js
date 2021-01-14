@@ -60,6 +60,15 @@ const env = {
     clientId: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackUrl: process.env.AUTH0_CALLBACK_URL,
+    jwt: {
+      aud: process.env.AUTH0_AUD,
+      iss: process.env.AUTH0_ISS,
+      algo: process.env.AUTH0_ALGO,
+    },
+    jwks: {
+      uri: process.env.AUTH0_JWKS_URI,
+      rpm: process.env.AUTH0_RPM,
+    },
   },
 
   // Session
