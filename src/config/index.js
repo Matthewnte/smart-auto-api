@@ -31,19 +31,19 @@ const env = {
 
   // Nodemailer
   email: {
-    userName: process.env.EMAIL_USERNAME,
+    user: process.env.EMAIL_USERNAME,
     password: process.env.EMAIL_PASSWORD,
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
-    user: process.env.AUTH_USER,
   },
 
   // Google API
-  oauth2: {
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: process.env.REDIRECT_URI,
-    refreshToken: process.env.REFRESH_TOKEN,
+  google: {
+    user: process.env.GOOGLE_AUTH_USER,
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    redirectUri: process.env.GOOGLE_REDIRECT_URI,
+    refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
   },
 
   // Agenda.js

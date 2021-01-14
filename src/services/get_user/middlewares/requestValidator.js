@@ -43,7 +43,7 @@ const listUsers = [
 ];
 
 const auth = [
-  header('authorization')
+  header('Authorization')
     .exists()
     .withMessage('Authorization token required')
     .isString()

@@ -17,10 +17,6 @@ router.get(
       scope: 'openid email profile',
     },
   ),
-  (req, res) => {
-    const redirectUrl = '/';
-    res.redirect(redirectUrl);
-  },
 );
 
 // On successful login
