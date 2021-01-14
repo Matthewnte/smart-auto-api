@@ -9,7 +9,8 @@ const auth0Strategy = new Auth0Strategy(
     callbackURL: config.auth0.callbackUrl,
   },
   (accessToken, refreshToken, extraParams, profile, done) => {
-    return done(null, profile);
+    const user = { extraParams, profile };
+    return done(null, user);
   },
 );
 

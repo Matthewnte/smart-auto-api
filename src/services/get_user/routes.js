@@ -17,11 +17,14 @@ const router = Router();
 // Define routes
 router.get(
   '/users',
+  validators.auth,
+  isRequestValid,
   routeProtectors.jwtCheck,
+  routeProtectors.jwtErrHandler,
   routeProtectors.permissionsCheck(['read:users']),
   validators.listUsers,
   isRequestValid,
-  getAllUsers
+  getAllUsers,
 );
 router.get('/users/:userId', getOneUser);
 
