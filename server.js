@@ -4,9 +4,6 @@ const cluster = require('cluster');
 // Require system CPUs object
 const { cpus } = require('os');
 
-// Initiate .env
-require('dotenv').config();
-
 // Require app config
 const config = require('./src/config');
 

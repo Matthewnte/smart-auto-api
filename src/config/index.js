@@ -1,3 +1,6 @@
+// Initiate .env
+require('dotenv').config();
+
 // Expose values
 const env = {
   /**

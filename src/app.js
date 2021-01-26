@@ -19,11 +19,11 @@ const passport = require('passport');
 // dependency injection
 // require('./loaders/di_injection');
 
-// Require routes
-const services = require('./services');
-
 // Require configs
 const config = require('./config');
+
+// Require routes
+const services = require('./services');
 
 // Require passport-strategies
 const passportStrategies = require('./config/passport-strategies');
@@ -84,6 +84,12 @@ passport.deserializeUser((user, done) => {
 //   },
 // });
 // app.use('/api/v1/users/login', limiter);
+
+// App auth middleware
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated();
+  next();
+});
 
 // API entry
 app.use(`/api/v${config.api.version}`, services);

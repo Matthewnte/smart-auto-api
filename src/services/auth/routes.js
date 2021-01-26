@@ -1,7 +1,7 @@
 // Require middlewares
 const { Router } = require('express');
 const passport = require('passport');
-const config = require('../../config');
+// const config = require('../../config');
 
 // Initiate router
 const router = Router();
@@ -32,14 +32,15 @@ router.get(
         return res.redirect('/api/v1.0.0/auth/login');
       }
 
-      req.logIn(user, (loginErr) => {
+      return req.logIn(user, (loginErr) => {
         if (loginErr) {
           return next(loginErr);
         }
 
         const { returnTo } = req.session;
         delete req.session.returnTo;
-        res.redirect(config.client.baseUrl);
+        return res.json({ user, info, returnTo });
+        // return res.redirect(returnTo || config.client.baseUrl);
       });
     })(req, res, next);
   },
