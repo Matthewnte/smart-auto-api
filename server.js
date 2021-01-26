@@ -17,7 +17,13 @@ const mongoose = require('./src/config/db/mongoose');
 const app = require('./src/app');
 
 // Check that cluster is master on production
-if (process.env.NODE_ENV !== 'production' && cluster.isMaster) {
+if (
+  (
+    config.api.env === 'production'
+    || config.api.env === 'staging'
+  )
+  && cluster.isMaster
+) {
   // Get number of system processors
   const workersLength = cpus().length;
 

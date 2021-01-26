@@ -3,10 +3,15 @@ const { platform } = require('os');
 module.exports = {
   env: {
     browser: true,
+    commonjs: true,
     es2021: true,
+    node: true,
   },
   extends: [
     'airbnb-base',
+  ],
+  plugins: [
+    'pug',
   ],
   parserOptions: {
     ecmaVersion: 12,

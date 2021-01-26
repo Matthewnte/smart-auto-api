@@ -1,5 +1,5 @@
 // Require request validator
-const { query } = require('express-validator');
+const { query, header } = require('express-validator');
 
 const listUsers = [
   query('page')
@@ -42,6 +42,21 @@ const listUsers = [
     .withMessage('Full name must be at least 3 characters'),
 ];
 
+const auth = [
+  header('Authorization')
+    .exists()
+    .withMessage('Authorization token required')
+    .isString()
+    .withMessage('Invalid authorization token')
+    .trim(' ')
+    .notEmpty()
+    .withMessage('Authorization token required')
+    .customSanitizer((val) => val.substring('Bearer '.length, val.length))
+    .isJWT()
+    .withMessage('Invalid authorization token')
+    .customSanitizer((val) => `Bearer ${val}`),
+];
+
 module.exports = {
-  listUsers,
+  auth, listUsers,
 };

@@ -31,47 +31,56 @@ const emailService = async (user, content, params) => {
       if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
         // setup oauth2
         const oAuth2Client = new google.auth.OAuth2(
-          config.oauth2.clientId,
-          config.oauth2.clientSecret,
-          config.oauth2.redirectUri,
+          config.google.clientId,
+          config.google.clientSecret,
+          config.google.redirectUri,
         );
-        oAuth2Client.setCredentials({ refresh_token: config.oauth2.refreshToken });
+        oAuth2Client.setCredentials({ refresh_token: config.google.refreshToken });
+
+        // Get Google OAuth2 access token
         const accessToken = await oAuth2Client.getAccessToken();
 
+        // Create and return Google mail transport
         return nodemailer.createTransport({
           service: 'gmail',
           auth: {
             type: 'OAuth2',
-            user: config.email.user,
-            clientId: config.oauth2.clientId,
-            clientSecret: config.oauth2.clientSecret,
-            refreshToken: config.oauth2.refreshToken,
+            user: config.google.user,
+            clientId: config.google.clientId,
+            clientSecret: config.google.clientSecret,
+            refreshToken: config.google.refreshToken,
             accessToken,
           },
         });
       }
 
+      // Create and return generic mail transport
       return nodemailer.createTransport({
         host: config.email.host,
         port: config.email.port,
         auth: {
-          user: config.email.userName,
+          user: config.email.user,
           pass: config.email.password,
         },
       });
     })(),
+
     /**
      * @description Create email body content
      * @param {string} template Email HTML template
      * @param {string} url Link to webpage for further actions
      */
     emailOutput(template, url) {
+      // Define HTML data from pug file
       const html = pug.renderFile(
         path.resolve(__dirname, `../../views/emails/${template}.pug`),
         { firstName: user.firstName, url, subject: content.subject },
       );
+
+      // Return HTML data
       return html;
     },
+
     /**
      * @description Create account confirmation url
      */
@@ -111,7 +120,7 @@ const emailService = async (user, content, params) => {
 
       // Define email options
       const mailOptions = {
-        from: `Smart Autos <${config.email.user}>`,
+        from: `Smart Autos <${config.email.user || config.google.user}>`,
         to: user.email,
         subject,
         html,
@@ -123,6 +132,7 @@ const emailService = async (user, content, params) => {
         .then(() => logger.info('Email sent'))
         .catch((err) => logger.error(err));
     },
+
     /**
      * Send signup confirmation email.
      */
@@ -144,4 +154,5 @@ const emailService = async (user, content, params) => {
   return publics;
 };
 
+// Export email service function
 module.exports = emailService;
